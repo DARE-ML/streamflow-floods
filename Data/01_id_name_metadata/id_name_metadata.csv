@@ -1,0 +1,223 @@
+station_id,station_name,drainage_division,river_region,notes
+912101A,Gregory River at Gregory Downs (912101A),Carpentaria Coast,NICHOLSON-LEICHHARDT RIVERS,No notes
+912105A,Gregory River at Riversleigh No. 2 (912105A),Carpentaria Coast,NICHOLSON-LEICHHARDT RIVERS,No notes
+915011A,Porcupine Creek at Mt Emu Plains (915011A),Carpentaria Coast,FLINDERS-NORMAN RIVERS,No notes
+917107A,Elizabeth Creek at Mount Surprise (917107A),Carpentaria Coast,FLINDERS-NORMAN RIVERS,Uncertain catchment boundary.  The SRTM-derived boundary is 13.1% smaller than the BOM published value.
+919003A,Mitchell River at O.K. Bridge (919003A),Carpentaria Coast,MITCHELL-COLEMAN RIVERS (QLD),No notes
+919201A,Palmer River at Goldfields (919201A),Carpentaria Coast,MITCHELL-COLEMAN RIVERS (QLD),No notes
+919309A,Walsh River at Trimbles Crossing (919309A),Carpentaria Coast,MITCHELL-COLEMAN RIVERS (QLD),No notes
+922101B,Coen river at Racecourse (922101B),Carpentaria Coast,ARCHER-WATSON RIVERS,No notes
+925001A,Wenlock river at Moreton (925001A),Carpentaria Coast,WENLOCK RIVER,No notes
+926002A,Dulhunty River at Dougs Pad (926002A),Carpentaria Coast,DUCIE RIVER,No notes
+G9030124,Daly Waters Creek at Daly Waters (G9030124),Carpentaria Coast,ROPER RIVER,Uncertain catchment boundary.  The SRTM-derived boundary is 36.9% smaller than the BOM published value.
+G9030250,Ropa River at Red Rock  (G9030250),Carpentaria Coast,ROPER RIVER,Uncertainty with regards to catchment boundary.  The boundary derived from SRTM does not match the BOM drainage division boundary.  
+G9070142,McArthur River Upstream of Bailey's Grave (G9070142),Carpentaria Coast,McARTHUR RIVER,No notes
+A0020101,Diamantina River at Birdsville (A0020101),Lake Eyre Basin,DIAMANTINA-GEORGINA RIVERS,No notes
+A0030501,Cooper Creek at Cullyamurra Water Hole (A0030501),Lake Eyre Basin,COOPER CREEK-BULLOO RIVER,No notes
+G0010005,Ranken River at Soudan Homestead (G0010005),Lake Eyre Basin,DIAMANTINA-GEORGINA RIVERS,No notes
+G0050115,Hugh River at South Road Crossing (G0050115),Lake Eyre Basin,DIAMANTINA-GEORGINA RIVERS,No notes
+G0060005,Trephina Creek at Trephina Gorge (G0060005),Lake Eyre Basin,DIAMANTINA-GEORGINA RIVERS,No notes
+401009,Maragle Creek at Maragle (401009),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401012,Murray River at Biggara (401012),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401015,Bowna Creek at Yambla (401015),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401203,Mitta Mitta River at Hinnomunjie (401203),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401208,Cudgewa Creek at Berringama (401208),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401210,Snowy Creek at Below Granite Flat (401210),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401212,Nariel Creek at Upper Nariel (401212),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401216,Big River at Jokers Creek (401216),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+401217,Gibbo River at Gibbo Park (401217),Murray-Darling Basin,UPPER MURRAY RIVER,No notes
+402204,Yackandandah Creek at Osbornes Flat (402204),Murray-Darling Basin,KIEWA RIVER,No notes
+402206,Running Creek at Running Creek (402206),Murray-Darling Basin,KIEWA RIVER,No notes
+402213,Kinchington Creek at Osbornes Flat (402213),Murray-Darling Basin,KIEWA RIVER,No notes
+402217,Flaggy Creek at Myrtleford Road Bridge (402217),Murray-Darling Basin,KIEWA RIVER,Uncertain catchment boundary.  The SRTM-derived boundary is 14.2% smaller than the BOM published value.
+403209A,Reedy Creek at Wangaratta North (403209A),Murray-Darling Basin,OVENS RIVER,An examination of evidence concluded that gauge 403209A shares water with 403200.  For implications and adopted data see kf_FixingReedyCreek.pdf.
+403213A,Fifteen Mile Creek at Greta South (403213A),Murray-Darling Basin,OVENS RIVER,No notes
+403214,Happy Valley Creek at Rosewhite (403214),Murray-Darling Basin,OVENS RIVER,No notes
+403217,Rose River at Matong North (403217),Murray-Darling Basin,OVENS RIVER,No notes
+403221,Reedy Creek at Woolshed (403221),Murray-Darling Basin,OVENS RIVER,No notes
+403222,Buffalo River at Abbeyard (403222),Murray-Darling Basin,OVENS RIVER,No notes
+403226,Boggy Creek at Angleside (403226),Murray-Darling Basin,OVENS RIVER,No notes
+403232,Morses Creek at Wandiligong (403232),Murray-Darling Basin,OVENS RIVER,No notes
+404207,Holland Creek at Kelfeera (404207),Murray-Darling Basin,BROKEN RIVER,No notes
+405205,Murrindindi River at Murrindindi above Colwells (405205),Murray-Darling Basin,GOULBURN RIVER,No notes
+405209,Acheron River at Taggerty (405209),Murray-Darling Basin,GOULBURN RIVER,No notes
+405215,Howqua River at Glen Esk (405215),Murray-Darling Basin,GOULBURN RIVER,No notes
+405217,Yea River at Devlins Bridge (405217),Murray-Darling Basin,GOULBURN RIVER,No notes
+405218,Jamieson River at Gerrang Bridge (405218),Murray-Darling Basin,GOULBURN RIVER,No notes
+405219,Goulburn River at Dohertys (405219),Murray-Darling Basin,GOULBURN RIVER,No notes
+405226,Pranjip Creek at Moorlim (405226),Murray-Darling Basin,GOULBURN RIVER,No notes
+405227,Big River at Jamieson (405227),Murray-Darling Basin,GOULBURN RIVER,No notes
+405238,Mollison Creek at Pyalong (405238),Murray-Darling Basin,GOULBURN RIVER,No notes
+405245,Ford Creek at Mansfield (405245),Murray-Darling Basin,GOULBURN RIVER,No notes
+405248,Major Creek at Graytown (405248),Murray-Darling Basin,GOULBURN RIVER,No notes
+405251,Brankeet Creek at Ancona (405251),Murray-Darling Basin,GOULBURN RIVER,No notes
+405263,Goulburn River at U/S of Snake Creek Junction (405263),Murray-Darling Basin,GOULBURN RIVER,No notes
+405264,Big River at D/S of Frenchman Creek Junction (405264),Murray-Darling Basin,GOULBURN RIVER,No notes
+405274,Home Creek at Yarck (405274),Murray-Darling Basin,GOULBURN RIVER,No notes
+406208,Campaspe River at Ashborne (406208),Murray-Darling Basin,CAMPASPE RIVER,No notes
+406213,Campaspe River at Redesdale (406213),Murray-Darling Basin,CAMPASPE RIVER,No notes
+406214,Axe Creek at Longlea (406214),Murray-Darling Basin,CAMPASPE RIVER,No notes
+406224,Mount Pleasant Creek at Runnymede (406224),Murray-Darling Basin,CAMPASPE RIVER,No notes
+407214,Creswick Creek at Clunes (407214),Murray-Darling Basin,LODDON RIVER,No notes
+407215,Loddon River at Newstead (407215),Murray-Darling Basin,LODDON RIVER,No notes
+407220,Bet Bet Creek at Norwood (407220),Murray-Darling Basin,LODDON RIVER,No notes
+407230,Joyces Creek at Strathlea (407230),Murray-Darling Basin,LODDON RIVER,No notes
+407253,Piccaninny Creek at Minto (407253),Murray-Darling Basin,LODDON RIVER,No notes
+408200,Avoca River at Coonooer (408200),Murray-Darling Basin,AVOCA RIVER,No notes
+408202,Avoca River at Amphitheatre (408202),Murray-Darling Basin,AVOCA RIVER,No notes
+410057,Goobarragandra River at Lacmalac (410057),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+410061,Adelong Creek at Batlow Road (410061),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+410705,Molonglo River at Burbong (410705),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+410730,Cotter River at Gingera (410730),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+410731,Gudgenby River at Tennent (410731),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+410734,Queanbeyan River at Tinderry (410734),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+410761,Murrumbidgee River at Lobb Holes (410761),Murray-Darling Basin,MURRUMBIDGEE RIVER,No notes
+412028,Abercrombie River at Abercrombie  (412028),Murray-Darling Basin,LACHLAN RIVER,No notes
+412050,Crookwell River at Narrawa North (412050),Murray-Darling Basin,LACHLAN RIVER,No notes
+412066,Abercrombie River at Hadley No. 2 (412066),Murray-Darling Basin,LACHLAN RIVER,No notes
+415207,Wimmera River at Eversley (415207),Murray-Darling Basin,WIMMERA RIVER,No notes
+415226,Richardson River at Carrs Plains (415226),Murray-Darling Basin,AVON RIVER-TYRELL LAKE,No notes
+415237,Concongella Creek at Stawell (415237),Murray-Darling Basin,WIMMERA RIVER,No notes
+416003,Tenterfield Creek at Clifton (416003),Murray-Darling Basin,BORDER RIVERS,No notes
+416008,Beadt River at Haystack (416008),Murray-Darling Basin,BORDER RIVERS,No notes
+418005,Copes Creek at Kimberley (418005),Murray-Darling Basin,GWYDIR RIVER,No notes
+418014,Gwydir River at Yarrowyck (418014),Murray-Darling Basin,GWYDIR RIVER,No notes
+419005,Namoi River at North Cuerindi (419005),Murray-Darling Basin,NAMOI RIVER,No notes
+422202B,Dogwood Creek at Gilweir (422202B),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,No notes
+422306A,Swan Creek at Swanfels (422306A),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,No notes
+422313B,Emu Creek at Emu Vale (422313B),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,No notes
+422319B,Dalrymple Creek at Allora (422319B),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,No notes
+422321B,Spring Creek at Killarney (422321B),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,No notes
+422334A,Kings Creek at Aides Bridge (422334A),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,Uncertain catchment boundary.  The SRTM-derived boundary is 20.6% smaller than the BOM published value.
+422394A,Condamine River at Elbow Valley (422394A),Murray-Darling Basin,CONDAMINE-CULGOA RIVERS,No notes
+424002,Paroo River at Willarra Crossing (424002),Murray-Darling Basin,PAROO RIVER,No notes
+424201A,Paroo River at Caiwarro (424201A),Murray-Darling Basin,PAROO RIVER,No notes
+102101A,Pascoe River at Fall Creek (102101A),North East Coast,OLIVE-PASCOE RIVERS,No notes
+104001A,Stewart River at Telegraph Road (104001A),North East Coast,STEWART RIVER,No notes
+105101A,Normanby River at Battle Camp (105101A),North East Coast,NORMANBY RIVER,No notes
+105102A,Laura River at Coalseam Creek (105102A),North East Coast,NORMANBY RIVER,No notes
+105105A,East Normanby River at Development Road (105105A),North East Coast,NORMANBY RIVER,No notes
+107001B,Endeavour River at Flaggy (107001B),North East Coast,ENDEAVOUR RIVER,No notes
+108002A,Daintree River at Bairds (108002A),North East Coast,DAINTREE RIVER,No notes
+108003A,Bloomfield River at China Camp (108003A),North East Coast,DAINTREE RIVER,No notes
+112002A,Fisher Creek at Nerada (112002A),North East Coast,JOHNSTONE RIVER,No notes
+112102A,Liverpool Creek at Upper Japoonvale (112102A),North East Coast,JOHNSTONE RIVER,No notes
+113004A,Cochable Creek at Powerline (113004A),North East Coast,TULLY-MURRAY RIVERS,No notes
+116006B,Herbert River at Abergowrie (116006B),North East Coast,HERBERT RIVER,No notes
+116010A,Blencoe Creek at Blencoe Falls (116010A),North East Coast,HERBERT RIVER,No notes
+116011A,Millstream River at Ravenshoe (116011A),North East Coast,HERBERT RIVER,No notes
+116012A,Cameron Creek at 8.7KM (116012A),North East Coast,HERBERT RIVER,No notes
+116013A,Millstream river at Archer Creek (116013A),North East Coast,HERBERT RIVER,No notes
+116014A,Wild River at Silver Valley (116014A),North East Coast,HERBERT RIVER,No notes
+116015A,Blunder Creek at Wooroora (116015A),North East Coast,HERBERT RIVER,No notes
+121001A,Don River at Ida Creek (121001A),North East Coast,DON RIVER,No notes
+122004A,Gregory river at Lower Gregory (122004A),North East Coast,PROSERPINE RIVER,No notes
+126003A,Carmila Creek at Carmila (126003A),North East Coast,PLANE CREEK,No notes
+136202D,Barambah Creek at Litzows (136202D),North East Coast,BURNETT RIVER,No notes
+136203A,Barker Creek at Brooklands (136203A),North East Coast,BURNETT RIVER,No notes
+136208A,Boonara Creek at Ettiewyn (136208A),North East Coast,BURNETT RIVER,No notes
+137101A,Gregory River at Burrum Highway (137101A),North East Coast,BURRUM RIVER,No notes
+137201A,Isis River at Bruce Highway (137201A),North East Coast,BURRUM RIVER,No notes
+138004B,Munna Creek at Marodian (138004B),North East Coast,MARY RIVER (QLD),No notes
+138009A,Tinana Creek at Tagigan Road (138009A),North East Coast,MARY RIVER (QLD),No notes
+138010A,Wide Bay Creek at Kilkivan (138010A),North East Coast,MARY RIVER (QLD),No notes
+138113A,Kandanga Creek at Hygait (138113A),North East Coast,MARY RIVER (QLD),No notes
+143009A,Brisbane River at Gregors Creek (143009A),North East Coast,BRISBANE RIVER,No notes
+143110A,Bremer River at Adams Bridge (143110A),North East Coast,BRISBANE RIVER,No notes
+143303A,Stanley River at Peachester (143303A),North East Coast,BRISBANE RIVER,No notes
+145010A,Running Creek at 5.8KM Deickmans Bridge (145010A),North East Coast,LOGAN-ALBERT RIVERS,No notes
+145011A,Teviot Brook at Croftby (145011A),North East Coast,LOGAN-ALBERT RIVERS,No notes
+145018A,Burnett Creek at Up Stream Maroon Dam (145018A),North East Coast,LOGAN-ALBERT RIVERS,No notes
+145101D,Albert River at Lumeah Number 2 (145101D),North East Coast,LOGAN-ALBERT RIVERS,No notes
+145107A,Canungra Creek at Main Rd Bridge (145107A),North East Coast,LOGAN-ALBERT RIVERS,No notes
+146010A,Coomera River at Army Camp (146010A),North East Coast,SOUTH COAST,No notes
+146012A,Currumbin Creek at Nicolls Bridge (146012A),North East Coast,SOUTH COAST,No notes
+146014A,Back Creek at Beechmont (146014A),North East Coast,SOUTH COAST,No notes
+146095A,Tallebudgera Creek at Tallebudgera Ck Rd (146095A),North East Coast,SOUTH COAST,No notes
+A5030502,Scott Creek at Scott Bottom (A5030502),South Australian Gulf,ONKAPARINGA RIVER,No notes
+A5040517,First Creek at Waterfall Gully (A5040517),South Australian Gulf,TORRENS RIVER,No notes
+A5040523,Sixth Creek at Castambul (A5040523),South Australian Gulf,TORRENS RIVER,No notes
+A5050517,North Para River at Penrice (A5050517),South Australian Gulf,GAWLER RIVER,No notes
+A5130501,Rocky River upstream Gorge Falls (A5130501),South Australian Gulf,KANGAROO ISLAND,No notes
+204034,Henry River at Newton Boyd (204034),South East Coast (NSW),CLARENCE RIVER,No notes
+206014, Wollomombi River at Coninside (206014),South East Coast (NSW),MACLEAY RIVER,No notes
+206018,Apsley River at Apsley Falls (206018),South East Coast (NSW),MACLEAY RIVER,No notes
+208007,Nowendoc River at Nowendoc (208007),South East Coast (NSW),MANNING RIVER,No notes
+208009,Barnard River at Barry (208009),South East Coast (NSW),MANNING RIVER,No notes
+210006,Goulburn River at Coggan (210006),South East Coast (NSW),HUNTER RIVER,No notes
+210011,William River at Tillegra (210011),South East Coast (NSW),HUNTER RIVER,No notes
+211008,Jigadee Creek at Avondale (211008),South East Coast (NSW),MACQUARIE-TUGGERAH LAKES,No notes
+212209,Nepean River at Maguires Crossing (212209),South East Coast (NSW),HAWKESBURY RIVER,No notes
+212260,Kowmung River at Cedar Ford (212260),South East Coast (NSW),HAWKESBURY RIVER,No notes
+215002,Shoalhaven River at Warri  (215002),South East Coast (NSW),SHOALHAVEN RIVER,No notes
+215004,Corang River at Hockeys (215004),South East Coast (NSW),SHOALHAVEN RIVER,No notes
+215207,Shoalhaven River at Fossickers Flat,South East Coast (NSW),SHOALHAVEN RIVER,Not in the original list of hydrologic reference stations; added later.
+216002,Clyde River at Brooman (216002),South East Coast (NSW),CLYDE RIVER-JERVIS BAY,No notes
+216004,Currambene Creek at Falls Creek (216004),South East Coast (NSW),CLYDE RIVER-JERVIS BAY,No notes
+218001,Tuross River at Tuross Vale (218001),South East Coast (NSW),TUROSS RIVER,No notes
+219001,Rutherford Creek at Brown Mountain (219001),South East Coast (NSW),BEGA RIVER,No notes
+221207,Errinundra River at Errinundra (221207),South East Coast (Victoria),EAST GIPPSLAND,No notes
+221210,Genoa River at The Gorge (221210),South East Coast (Victoria),EAST GIPPSLAND,No notes
+222206,Buchan River at Buchan (222206),South East Coast (Victoria),SNOWY RIVER,No notes
+222213,Suggan Buggan River at Suggan Buggan (222213),South East Coast (Victoria),SNOWY RIVER,No notes
+223202,Tambo River at Swifts Creek (223202),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+224206,Wonnangatta River at Crooked River (224206),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+224213A,Dargo River at Lower Dargo Rd (224213A),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+224214A,Wentworth River at Tabberabbera (224214A),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+225020A,South Cascade Creek at Thomson Valley Road (225020A),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,Uncertain catchment boundary.  The SRTM-derived boundary is 20.1% larger than the BOM published value.
+225110A,Jordan River at D/S Johnsons Creek (225110A),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+225219,Macalister River at Glencairn (225219),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+226220,Loch River at Noojee (226220),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+226222,Latrobe River at Near Noojee (226222),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+226407,Morwell River at Boolarra (226407),South East Coast (Victoria),MITCHELL-THOMSON RIVERS,No notes
+227225A,Tarra River at Fischers (227225A),South East Coast (Victoria),SOUTH GIPPSLAND,No notes
+227226,Tarwin River East Branch  at Dumbalk North (227226),South East Coast (Victoria),SOUTH GIPPSLAND,No notes
+227227,Wilkur Creek at Leongatha (227227),South East Coast (Victoria),SOUTH GIPPSLAND,No notes
+229650A,Aldermans Creek at RD 32 (229650A),South East Coast (Victoria),YARRA RIVER,No notes
+229661A,Walshes Creek at RD 1 (229661A),South East Coast (Victoria),YARRA RIVER,No notes
+230210,Saltwater Creek at Bullengarook (230210),South East Coast (Victoria),YARRA RIVER,No notes
+231213,Lerderderg River at Sardine Creek O'brien Crossing (231213),South East Coast (Victoria),WERRIBEE RIVER,No notes
+235205,Arkins Creek West Branch at Wyelangta (235205),South East Coast (Victoria),OTWAY COAST,No notes
+236213,Mount Emu Creek at Mena Park (236213),South East Coast (Victoria),HOPKINS RIVER,No notes
+238208,Jimmy Creek at Jimmy Creek (238208),South East Coast (Victoria),GLENELG RIVER,No notes
+A2390519,Mosquito Creek at Struan (A2390519),South East Coast (Victoria),MILLICENT COAST,Uncertain catchment boundary.  The SRTM-derived boundary is 23.5% smaller than the BOM published value.  The BoM boundary has been adopted (see _README_HRS_Boundaries.pdf).
+A2390523,Stony Creek at Woakwine Range (A2390523),South East Coast (Victoria),MILLICENT COAST,Uncertain catchment boundary: CA_SRTM is 98.3% smaller than CA_BOM.  The BoM boundary has been adopted (see _README_HRS_Boundaries.pdf).  
+A2390531,Morambro Creek at Bordertown-Naracoorte Road Bridge (A2390531),South East Coast (Victoria),MILLICENT COAST,No notes
+604053,Kent River at Styx Junction (604053),South West Coast,KENT RIVER,No notes
+606001,Deep River at Teds Pool (606001),South West Coast,FRANKLAND-DEEP RIVERS,No notes
+606002,Weld River at Wattle Block (606002),South West Coast,FRANKLAND-DEEP RIVERS,Uncertain catchment boundary: CA_SRTM is 17.1% smaller than the BOM published value.
+606185,Shannon River at Dog Pool (606185),South West Coast,SHANNON RIVER,Uncertain catchment boundary: CA_SRTM is 19.6% larger than the BOM published value.  The BoM boundary has been adopted (see _README_HRS_Boundaries.pdf).
+607155,Dombakup Brook at Malimup Track (607155),South West Coast,WARREN RIVER,No notes
+608002,Carey Brook at Staircase Road (608002),South West Coast,DONNELLY RIVER,No notes
+610008,Margaret River North at Whicher Range (610008),South West Coast,BUSSELTON COAST,Uncertain catchment boundary: CA_SRTM is 11.5% larger than the BOM published value.
+613002,Harvey River at Dingo Road (613002),South West Coast,MURRAY RIVER (WA),No notes
+613146,Clarke Brook at Hillview Farm (613146),South West Coast,MURRAY RIVER (WA),No notes
+614044,Yarragil Brook at Yarragil Formation (614044),South West Coast,MURRAY RIVER (WA),No notes
+616002,Darkin River at Pine Plantation (616002),South West Coast,SWAN COAST-AVON RIVER,No notes
+616013,Helena River  at Ngangaguringuring (616013),South West Coast,SWAN COAST-AVON RIVER,No notes
+616065,Canning River at Glen Eagle (616065),South West Coast,SWAN COAST-AVON RIVER,No notes
+803003,Fletcher River at Dromedary (803003),Tanami-Timor Sea Coast,LENNARD RIVER,No notes
+804001,Isdell River at Dales Yard (804001),Tanami-Timor Sea Coast,ISDELL RIVER,No notes
+809310,Ord River at Bedford Downs (809310),Tanami-Timor Sea Coast,ORD-PENTECOST RIVERS,No notes
+G8110004,East Baines River at VIC Highway (G8110004),Tanami-Timor Sea Coast,VICTORIA RIVER-WISO,No notes
+G8110016,Upper VIC River at Wave Hill Police Station (G8110016),Tanami-Timor Sea Coast,VICTORIA RIVER-WISO,No notes
+G8140001,Katherine River at Railway Bridge (G8140001),Tanami-Timor Sea Coast,DALY RIVER,No notes
+G8140040,Daly River at Mount Nancar (G8140040),Tanami-Timor Sea Coast,DALY RIVER,No notes
+G8140161,Green Ant Creek at Tipperary (G8140161),Tanami-Timor Sea Coast,DALY RIVER,No notes
+G8150018,Elizabeth River at Stuart Highway (G8150018),Tanami-Timor Sea Coast,FINNISS RIVER,No notes
+G8170002,Adelaide River at Railway Bridge (G8170002),Tanami-Timor Sea Coast,ADELAIDE RIVER,No notes
+G8190001,West Alligator River at Upstream Arnhem Highway (G8190001),Tanami-Timor Sea Coast,WILDMAN RIVER,No notes
+G8200045,South Alligator River at El Sherana  (G8200045),Tanami-Timor Sea Coast,SOUTH ALLIGATOR RIVER,No notes
+G8210010,East Alligator River at 12 Deg 43 Minutes South (G8210010),Tanami-Timor Sea Coast,EAST ALLIGATOR RIVER,No notes
+302214,Ansons River at Downstream of Big Boggy Creek (302214),Tasmania,EAST COAST,No notes
+304497,Nive River at Gowan Brae (304497),Tasmania,DERWENT RIVER,No notes
+304499,Tyenna River at Newbury (304499),Tasmania,DERWENT RIVER,No notes
+305202,Snug Rivulet at U/S Snug Tiers Rd Bridge (305202),Tasmania,KINGSTON COAST,No notes
+307473,Davey River at D/S Crossing Rv  (307473),Tasmania,SOUTH-WEST COAST,Uncertain catchment boundary: CA_SRTM is 27.3% smaller than CA_BOM.  The BoM boundary has been adopted (see _README_HRS_Boundaries.pdf).
+308145,Franklin River at Mt Fincham Track (308145),Tasmania,GORDON RIVER,No notes
+308799,Collingwood river at B/L Alma (308799),Tasmania,GORDON RIVER,No notes
+312061,Hellyer River at Guilford Junction (312061),Tasmania,ARTHUR RIVER,No notes
+314207,Leven River at at Bannons Bridge (314207),Tasmania,SMITHTON-BURNIE COAST,No notes
+314213,Black River at South Forest (314213),Tasmania,SMITHTON-BURNIE COAST,No notes
+315450,Forth River at U/S Lemonthyme (315450),Tasmania,FORTH RIVER,No notes
+318076,North Esk River at Ballroom (318076),Tasmania,TAMAR RIVER,No notes
