@@ -26,15 +26,15 @@ from .window import WindowGenerator
 class CustomLoss():  
     def qloss_95(y_true, y_pred, q=0.95):
         e = (y_true-y_pred)    
-        return tf.square(y_true-y_pred) + K.maximum(q*e, (q-1)*e)
+        return tf.square(y_true-y_pred) + tf.math.maximum(q*e, (q-1)*e)
         
     def qloss_90(y_true, y_pred, q=0.9):
         e = (y_true-y_pred)    
-        return tf.square(y_true-y_pred) + K.maximum(q*e, (q-1)*e)
+        return tf.square(y_true-y_pred) + tf.math.maximum(q*e, (q-1)*e)
     
     def qloss_70(y_true, y_pred, q=0.7):
         e = (y_true-y_pred)    
-        return tf.square(y_true-y_pred) + K.maximum(q*e, (q-1)*e)
+        return tf.square(y_true-y_pred) + tf.math.maximum(q*e, (q-1)*e)
     
     def qloss_50(y_true, y_pred, q=0.5):
         e = (y_true-y_pred)    
@@ -668,7 +668,7 @@ class Switch_Model(Model):
         summary_dict['input_width'] = self.window.input_width
         summary_dict['label_width'] = self.window.label_width
         
-        summary_dict['station'] = station
+        # summary_dict['station'] = station
 
         summary_dict['NSE'] = self.get_NSE(station)       
                   

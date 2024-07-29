@@ -6,6 +6,8 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from numpy import array
+from sklearn.preprocessing import MinMaxScaler
+
 
 class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
@@ -256,12 +258,14 @@ class MultiWindow():
 
 
 class MultiNumpyWindow():
-    def __init__(self, input_width, label_width, shift,
+    def __init__(self, input_width, label_width, shift, camels_data,
                  timeseries_source, summary_source, summary_data,
                  stations, label_columns=None):
-        
+
+        # Get train and test data
         train_df, test_df = camels_data.get_train_val_test(source=timeseries_source,
-                                                                   stations=stations)      
+                                                           stations=stations)      
+
         # Store the raw data.
         self.train_df = train_df
         self.test_df = test_df
@@ -348,134 +352,6 @@ class MultiNumpyWindow():
         for ts in map_ds:
             x = ts[0]
             y = ts[1]
-
-            x_array.append(x.numpy())
-            y_array.append(y.numpy())
-
-        return np.array(x_array), np.array(y_array) 
-    
-    @property
-    def train(self):
-        return self.train_timeseries, self.train_static, self.train_y
-
-
-    @property
-    def test(self):      
-        return self.test_timeseries, self.test_static, self.test_y
-
-
-    def test_windows(self, station=None):
-        total_size = self.test_array(station).shape[0]
-        convolution_size = self.input_width
-        prediction_size = self.label_width
-        
-        a = []
-        
-        for i in range(convolution_size, (total_size-prediction_size+1)):
-            index_list = list(range(i, i+prediction_size))
-            a.append(self.test_array(station)[index_list])
-        
-        return np.squeeze(array(a), axis=2)
-    
-    def test_array(self, station):
-        return array(self.test_df[station][self.label_columns])
-
-
-
-
-class MultiNumpyWindow():
-    def __init__(self, input_width, label_width, shift,
-                 timeseries_source, summary_source, summary_data,
-                 stations, label_columns=None):
-        
-        train_df, test_df = camels_data.get_train_val_test(source=timeseries_source,
-                                                                   stations=stations)      
-        # Store the raw data.
-        self.train_df = train_df
-        self.test_df = test_df
-        self.stations = stations
-        self.total_stations = len(stations)
-        
-        self.num_timeseries_features = len(timeseries_source)
-        self.num_static_features = len(summary_source)     
-        self.timeseries_source = timeseries_source
-        self.summary_source = summary_source      
-    
-        self.input_width = input_width
-        self.label_width = label_width
-        self.shift = shift
-        self.total_window_size = input_width + shift
-        self.label_columns = label_columns
-        
-        self.train_timeseries = []
-        self.test_timeseries = []  
-        
-        self.train_static = []
-        self.test_static = [] 
-        
-        self.train_y = []
-        self.test_y = []
-        
-        for i, s in enumerate(stations):
-            # process timeseries
-            window = WindowGenerator(input_width=input_width,
-                                     label_width=label_width,
-                                     shift=shift,
-                                     train_df=train_df,
-                                     test_df=test_df,
-                                     station=s,
-                                     label_columns=label_columns)
-            
-            x_train, y_train = self.mapdata_tonumpy(window.train)
-            x_test, y_test = self.mapdata_tonumpy(window.test)
-            
-            self.train_timeseries.extend(x_train) 
-            self.test_timeseries.extend(x_test) 
-            
-            self.train_y.extend(y_train) 
-            self.test_y.extend(y_test)      
-            
-            # process static
-            static = summary_data[summary_source].loc[s].to_numpy()         
-            padding = np.zeros((self.total_stations, ), dtype=np.float32)
-            padding[i] = 1
-            
-            static = np.concatenate([static, padding], axis=0)
-            
-            self.train_static.extend([static for _ in range(x_train.shape[0])])
-            self.test_static.extend([static for _ in range(x_test.shape[0])])
-            
-        self.train_timeseries = np.array(self.train_timeseries)
-        self.test_timeseries = np.array(self.test_timeseries) 
-        
-        self.train_static = np.array(self.train_static)
-        self.test_static = np.array(self.test_static)
-        
-        scaler = MinMaxScaler()
-        scaler.fit(self.train_static)
-        
-        self.train_static = scaler.transform(self.train_static)
-        self.test_static = scaler.transform(self.test_static)
-                
-        
-        #self.train_static = np.ones((self.train_static.shape[0], self.train_static.shape[1]))
-        
-        self.train_y = np.array(self.train_y) 
-        self.train_y = np.swapaxes(self.train_y, 1, 2)
-
-        
-        self.test_y = np.array(self.test_y)
-        self.test_y = np.swapaxes(self.test_y, 1, 2)        
-
-    def mapdata_tonumpy(self, map_ds):
-        map_ds = map_ds.unbatch()
-
-        x_array = []
-        y_array = []
-
-        for ts in map_ds:
-            x = ts[0]
-            y= ts[1]
 
             x_array.append(x.numpy())
             y_array.append(y.numpy())

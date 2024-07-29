@@ -1,0 +1,78 @@
+import itertools
+from datetime import datetime
+import pandas as pd
+
+from src.data import PrepareData
+from src.data import plot_catchments, read_data_from_file
+from src.window import WindowGenerator, MultiNumpyWindow, MultiWindow
+from src.model import Base_Model
+
+
+# Read timeseries and summary data from data dir
+data_dir = '/srv/scratch/z5370003/data/camels-dropbox/'
+timeseries_data, summary_data = read_data_from_file(data_dir)
+
+# Create Dataset
+camels_data = PrepareData(timeseries_data, summary_data)
+
+# Plot catchments on map
+plot_catchments(camels_data, data_dir)
+
+
+camels_data.summary_data = camels_data.summary_data.T.drop_duplicates().T
+selected_stations = list(camels_data.summary_data[camels_data.summary_data['state_outlet'] == 'SA'].index)
+
+# Enter the model you wish to run or multiple as per requirements. The models can be accessed through the following names:
+#['multi-LSTM', 'multi-linear','multi-CNN', 'multi-Bidirectional-LSTM']
+
+# Individual LSTM-SA
+combined= []
+for i in range(0, 3):
+    print('RUN', i)
+    input_widths = [5]
+    label_widths = [5]
+    models = ['multi-LSTM']
+    variables = [['streamflow_MLd_inclInfilled', 'precipitation_deficit', 'year_sin', 'year_cos', 'tmax_AWAP', 'tmin_AWAP']]
+
+    permutations_base = list(itertools.product(*[input_widths, label_widths, selected_stations, models, variables]))
+
+    results_baseModels_variables = []
+    models_baseModels_variables = []
+    errors_baseModels_variables = []
+
+    for input_width, label_width, station, model_name, variable in permutations_base:
+        if input_width < label_width:
+            continue
+
+        train_df, test_df = camels_data.get_train_val_test(source=variable, stations=selected_stations)
+
+        try:
+            print('input_width:{}, label_width:{}, station:{}, model:{}, variables:{}'.format(input_width, label_width, station, model_name, variable))
+            now = datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            print(current_time)
+
+            window = WindowGenerator(input_width=input_width,
+                                     label_width=label_width,
+                                     shift=label_width,
+                                     train_df=train_df,
+                                     test_df=test_df,
+                                     station=station,
+                                     label_columns=['streamflow_MLd_inclInfilled'])
+
+            model = Base_Model(model_name=model_name, window=window, CONV_WIDTH=label_width)
+
+            results_baseModels_variables.append(model.summary())
+
+            pd.DataFrame(results_baseModels_variables).to_csv('results_files/results_ensemble_all_1.csv')
+
+        except:
+            errors_baseModels_variables.append([input_width, label_width, station, model])
+        
+        
+        break
+
+    Individual_SA= pd.DataFrame(results_baseModels_variables)
+    # Individual_SA= Individual_SA.mean()
+    # Individual_SA= Individual_SA.to_dict()
+    # combined.append(Individual_SA)
