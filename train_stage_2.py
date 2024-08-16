@@ -1,15 +1,26 @@
 import itertools
-from datetime import datetime
+import argparse
 import pandas as pd
+
+from datetime import datetime
 
 from src.data import PrepareData
 from src.data import plot_catchments, read_data_from_file
-from src.window import WindowGenerator, MultiNumpyWindow, MultiWindow
+from src.window import WindowGenerator
 from src.model import Base_Model
+
+# Argument Parser
+parser = argparse.ArgumentParser(description='Train Stage 2')
+parser.add_argument('--data-dir', type=str, default='/srv/scratch/z5370003/data/camels-dropbox/', help='Path to the data directory')
+parser.add_argument('--num-runs', type=int, default=3, help='Number of runs')
+
+args = parser.parse_args()
+
+data_dir = args.data_dir
+num_runs = args.num_runs
 
 
 # Read timeseries and summary data from data dir
-data_dir = '/srv/scratch/z5370003/data/camels-dropbox/'
 timeseries_data, summary_data = read_data_from_file(data_dir)
 
 # Create Dataset
@@ -27,7 +38,7 @@ selected_stations = list(camels_data.summary_data[camels_data.summary_data['stat
 
 # Individual LSTM-SA
 combined= []
-for i in range(0, 3):
+for i in range(0, num_runs):
     print('RUN', i)
     input_widths = [5]
     label_widths = [5]

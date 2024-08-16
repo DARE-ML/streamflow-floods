@@ -1,17 +1,26 @@
-import itertools
+import argparse
 import pandas as pd
 import matplotlib.patches as mpatches
-
-from datetime import datetime
+import matplotlib.pyplot as plt
 
 from src.data import PrepareData
 from src.data import plot_catchments, read_data_from_file
-from src.window import WindowGenerator, MultiNumpyWindow, MultiWindow
-from src.model import Base_Model, Ensemble_Static, Switch_Model
+from src.window import MultiNumpyWindow, MultiWindow
+from src.model import Switch_Model
+
+
+# Argument Parser
+parser = argparse.ArgumentParser(description='Train Stage 3')
+parser.add_argument('--data-dir', type=str, default='/srv/scratch/z5370003/data/camels-dropbox/', help='Path to the data directory')
+parser.add_argument('--num-runs', type=int, default=3, help='Number of runs')
+
+# Parse the arguments
+args = parser.parse_args()
+data_dir = args.data_dir
+num_runs = args.num_runs
 
 
 # Read timeseries and summary data from data dir
-data_dir = '/srv/scratch/z5370003/data/camels-dropbox/'
 timeseries_data, summary_data = read_data_from_file(data_dir)
 
 # Create Dataset
@@ -27,7 +36,7 @@ selected_stations = list(camels_data.summary_data[camels_data.summary_data['stat
 
 # Quantile LSTM
 combined=[]
-for i in range(3):
+for i in range(num_runs):
     print('RUN',i)
     results_switch=[]
     variable_ts = ['streamflow_MLd_inclInfilled', 'precipitation_deficit', 'year_sin', 'year_cos', 'tmax_AWAP', 'tmin_AWAP']
@@ -58,7 +67,7 @@ for i in range(3):
     model_switch = Switch_Model(window_switch=np_window, window_regular=multi_window, CONV_WIDTH=5) 
 
     for station in selected_stations:
-                results_switch.append(model_switch.summary(station))
+        results_switch.append(model_switch.summary(station))
     
     Switch_SA= pd.DataFrame(results_switch)
     # Switch_SA= Switch_SA.mean()
