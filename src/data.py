@@ -12,8 +12,6 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.model_selection import train_test_split
 
 
-
-
 def read_data_from_file(data_dir):
     timeseries_dfs = []
     summary_dfs = []
