@@ -128,7 +128,7 @@ class PrepareData():
     
     def __init__(self, timeseries_data, summary_data):
         ### Data Cleaning
-        self.timeseries_data = timeseries_data.replace(-99.99,np.NaN)
+        self.timeseries_data = timeseries_data.replace(-99.99,np.nan)
         
         ### Feature Engineering
         # get precipitation deficit
@@ -149,6 +149,11 @@ class PrepareData():
         self.flood_probabilities = self.streamflow_data.apply(self.flood_extent, axis=0)
         self.flood_probabilities['source'] = 'flood_probabilities'
         self.flood_probabilities['date'] = self.streamflow_data.index
+
+        self.flow_acceleration = np.abs(self.streamflow_data - self.streamflow_data.shift(1))
+        self.flood_prob_acc = self.flow_acceleration.apply(self.flood_extent, axis=0)
+        self.flood_prob_acc['source'] = 'flood_prob_acc'
+        self.flood_prob_acc['date'] = self.streamflow_data.index
         
         self.flood_indicator = self.flood_probabilities.applymap(lambda x: int(x <0.05) if pd.isnull(x) == False and isinstance(x, float) else x)
         self.flood_indicator['source'] = 'flood_indicator'
@@ -178,7 +183,7 @@ class PrepareData():
         df_cos['date'] = self.flood_probabilities['date']
             
         ### Return
-        self.timeseries_data = pd.concat([self.timeseries_data, self.precipitation_deficit, self.flood_probabilities, df_sin, df_cos, self.flood_indicator], axis=0).reset_index(drop=True)
+        self.timeseries_data = pd.concat([self.timeseries_data, self.precipitation_deficit, self.flood_probabilities, self.flood_prob_acc, df_sin, df_cos, self.flood_indicator], axis=0).reset_index(drop=True)
         self.summary_data = summary_data
         
     def get_timeseries_data(self, source, stations):      
@@ -240,6 +245,9 @@ class PrepareData():
             
             train_df = pd.DataFrame(scaler.transform(train_df), index=train_df.index, columns=train_df.columns)
             test_df = pd.DataFrame(scaler_test.transform(test_df), index=test_df.index, columns=test_df.columns)
+
+            self.scaler = scaler
+            self.scaler_test = scaler_test
             
      
         for station in stations:
@@ -251,19 +259,36 @@ class PrepareData():
                                   
         return train_df.sort_index(axis=1), test_df.sort_index(axis=1) 
     
+    # def flood_extent(self, streamflow_ts):
+    #     station_name = streamflow_ts.name
+
+    #     flow_data = pd.DataFrame(streamflow_ts)  
+    #     na_values = flow_data[flow_data[station_name].isna()][station_name]
+
+    #     flow_data = flow_data.dropna().sort_values(by=station_name, ascending=True).reset_index()
+    #     flow_data['probability'] = (flow_data.index + 1)/(1+len(flow_data)) 
+    #     flow_data = flow_data.sort_values(by='date').drop(['date', station_name], axis=1)['probability']
+    #     flow_data = pd.concat([na_values, flow_data]).reset_index(drop=True) 
+    #     flow_data.name = station_name  
+
+    #     return flow_data 
+
     def flood_extent(self, streamflow_ts):
+    
         station_name = streamflow_ts.name
-
-        flow_data = pd.DataFrame(streamflow_ts)  
-        na_values = flow_data[flow_data[station_name].isna()][station_name]
-
-        flow_data = flow_data.dropna().sort_values(by=station_name, ascending=False).reset_index()
-        flow_data['probability'] = (flow_data.index + 1)/(1+len(flow_data)) 
-        flow_data = flow_data.sort_values(by='date').drop(['date', station_name], axis=1)['probability']
-        flow_data = pd.concat([na_values, flow_data]).reset_index(drop=True) 
-        flow_data.name = station_name  
-
-        return flow_data 
+    
+        flow_data = pd.DataFrame(streamflow_ts)
+        flow_data = flow_data.sort_values(by=station_name, ascending=True)
+    
+        flow_data.loc[~flow_data[station_name].isnull(), 'idx'] = np.arange((~flow_data[station_name].isnull()).sum())
+        flow_data.loc[:, 'prob'] =  (flow_data.idx + 1)/(1+len(flow_data))
+        
+        # flow_data.loc[flow_data[station_name].isnull(), 'prob'] = np.nan
+        flood_prob = flow_data.prob
+        flood_prob.name = station_name
+        flood_prob = flood_prob.sort_index()
+    
+        return flood_prob.reset_index(drop=True)
 
 
 

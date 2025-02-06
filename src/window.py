@@ -183,7 +183,8 @@ class WindowGenerator():
 class MultiWindow():
     def __init__(self, input_width, label_width, shift,
                  train_df,test_df, stations, 
-                 statics='separate', filtered=-1000, label_columns=None):
+                 statics='separate', filtered=-1000, 
+                 label_columns=None, batch_size=512):
      
         # Store the raw data.
         self.train_df = train_df       
@@ -198,6 +199,8 @@ class MultiWindow():
         self.label_columns = label_columns
         
         self.filtered = filtered
+
+        self.batch_size = batch_size
            
         self.trains = []
         self.tests = []        
@@ -222,7 +225,7 @@ class MultiWindow():
         ds = tf.data.Dataset.from_tensor_slices(self.trains)
         concat_ds = ds.interleave(lambda x: x, cycle_length=1, num_parallel_calls=tf.data.AUTOTUNE).filter(lambda x, y: tf.math.reduce_max(y) > self.filtered)
         
-        return concat_ds.batch(32)
+        return concat_ds.batch(self.batch_size)
 
 
     @property
@@ -230,7 +233,7 @@ class MultiWindow():
         ds = tf.data.Dataset.from_tensor_slices(self.tests)
         concat_ds = ds.interleave(lambda x: x, cycle_length=1, num_parallel_calls=tf.data.AUTOTUNE)
         
-        return concat_ds.batch(32)
+        return concat_ds.batch(self.batch_size)
 
 
     def test_windows(self, station=None):
@@ -264,7 +267,7 @@ class MultiNumpyWindow():
 
         # Get train and test data
         train_df, test_df = camels_data.get_train_val_test(source=timeseries_source,
-                                                           stations=stations)      
+                                                           stations=stations)
 
         # Store the raw data.
         self.train_df = train_df
@@ -333,15 +336,13 @@ class MultiNumpyWindow():
         self.train_static = scaler.transform(self.train_static)
         self.test_static = scaler.transform(self.test_static)
                 
-        
         #self.train_static = np.ones((self.train_static.shape[0], self.train_static.shape[1]))
         
         self.train_y = np.array(self.train_y) 
         self.train_y = np.swapaxes(self.train_y, 1, 2)
 
-        
         self.test_y = np.array(self.test_y)
-        self.test_y = np.swapaxes(self.test_y, 1, 2)        
+        self.test_y = np.swapaxes(self.test_y, 1, 2)
 
     def mapdata_tonumpy(self, map_ds):
         map_ds = map_ds.unbatch()
@@ -364,7 +365,7 @@ class MultiNumpyWindow():
 
 
     @property
-    def test(self):      
+    def test(self):
         return self.test_timeseries, self.test_static, self.test_y
 
 
