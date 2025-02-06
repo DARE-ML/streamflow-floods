@@ -83,13 +83,13 @@ for i in range(0, num_runs):
         
         break
 
-    Individual_SA= pd.DataFrame(results_baseModels_variables)
+    Individual_SA = pd.DataFrame(results_baseModels_variables)
     # Individual_SA= Individual_SA.mean()
     # Individual_SA= Individual_SA.to_dict()
     # combined.append(Individual_SA)
 
 
-# Batch-Indicator LSTM-SA
+# Batch-Temporal LSTM-SA
 combined= []
 for i in range(0, num_runs):
     print('RUN',i)

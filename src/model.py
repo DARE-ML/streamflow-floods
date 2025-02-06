@@ -38,7 +38,11 @@ class CustomLoss():
     
     def qloss_50(y_true, y_pred, q=0.5):
         e = (y_true-y_pred)    
-        return tf.square(y_true-y_pred) + K.maximum(q*e, (q-1)*e)
+        return tf.square(y_true-y_pred) + tf.math.maximum(q*e, (q-1)*e)
+
+    def qloss_05(y_true, y_pred, q=0.05):
+        e = (y_true-y_pred)    
+        return tf.square(y_true-y_pred) + tf.math.maximum(q*e, (q-1)*e)
     
 class Model():
     MAX_EPOCHS = 150
@@ -57,7 +61,7 @@ class Model():
                     metrics=[tf.metrics.MeanAbsoluteError()])
 
         history = model.fit(window.train, epochs=self.MAX_EPOCHS,
-                            verbose=0)
+                            verbose=1)
 
         return history
 
@@ -177,7 +181,7 @@ class Model():
             actuals = self.window.test_windows(station)
         else:
             preds = self.predictions()
-            actuals = self.window.test_windows
+            actuals = self.window.test_windows()
         
         NSE = []
 
@@ -231,7 +235,7 @@ class Model():
             num_inputs = len(self.window.train_df.columns.levels[1])
             tf_test = tf_test.unbatch().filter(lambda x, y: tf.math.reduce_sum(x[:, num_inputs + filter_index]) > 0).batch(32)
 
-        return np.squeeze(self.model.predict(tf_test), axis=2)
+        return np.squeeze(self.model.predict(tf_test, verbose=0), axis=2)
         
 class Base_Model(Model):  
     def __init__(self, model_name, window, CONV_WIDTH, output_activation='sigmoid', loss_func=tf.losses.MeanSquaredError()):
@@ -272,7 +276,7 @@ class Base_Model(Model):
             self.model = Sequential([
                             # Shape [batch, time, features] => [batch, lstm_units].
                             # Adding more `lstm_units` just overfits more quickly.
-                            LSTM(20, return_sequences=False),
+                            LSTM(32, return_sequences=False),
                             # Shape => [batch, out_steps*features].
                             Dense(CONV_WIDTH, activation=output_activation,
                                                   kernel_initializer=tf.initializers.zeros()),
@@ -460,9 +464,9 @@ class Mixed_Model(Base_Model):
 ## Without Changes
 
 class Ensemble_Static():
-    epochs = 100
+    epochs = 150
     patience = 5
-    def __init__(self, numpy_window, batch_size=32):
+    def __init__(self, numpy_window, batch_size=256, loss_func=None):
         num_timesteps = numpy_window.input_width
         num_timeseries_features = numpy_window.num_timeseries_features
         num_static_features = numpy_window.num_static_features + numpy_window.total_stations
@@ -473,6 +477,8 @@ class Ensemble_Static():
         self.stations = numpy_window.stations
         self.n_stations = numpy_window.total_stations
         self.numpy_window = numpy_window
+
+        self.loss_func = loss_func
         # RNN + SLP Model
         # Define input layer
 
@@ -481,20 +487,21 @@ class Ensemble_Static():
 
         # RNN Layers
         # layer - 1
-        rec_layer_one = LSTM(20, name ="BIDIRECTIONAL_LAYER_1", return_sequences=True)(recurrent_input)
-        rec_layer_one = Dropout(0.1,name ="DROPOUT_LAYER_1")(rec_layer_one)
+        rec_layer_one = LSTM(64, name ="LSTM_LAYER_1", return_sequences=True)(recurrent_input)
+        # rec_layer_one = Dropout(0.1,name ="DROPOUT_LAYER_1")(rec_layer_one)
         
         # layer - 2
-        rec_layer_two = LSTM(20, name ="BIDIRECTIONAL_LAYER_2", return_sequences=False)(rec_layer_one)
-        rec_layer_two = Dropout(0.1,name ="DROPOUT_LAYER_2")(rec_layer_two)      
+        rec_layer_two = LSTM(64, name ="LSTM_LAYER_2", return_sequences=True)(rec_layer_one)
+        rec_layer_two = Flatten(name ="FLATTEN_LAYER")(rec_layer_two[:, -2:, :])
+        # rec_layer_two = Dropout(0.1,name ="DROPOUT_LAYER_2")(rec_layer_two)
         
-
         # SLP Layers
-        static_layer_one = Dense(20, activation='relu',name="DENSE_LAYER_1")(static_input)
+        static_layer_one = Dense(64, activation='relu',name="DENSE_LAYER_1")(static_input)
+        
         # Combine layers - RNN + SLP
         combined = Concatenate(axis= 1,name = "CONCATENATED_TIMESERIES_STATIC")([rec_layer_two, static_layer_one])
-        combined_dense_two = Dense(20, activation='relu',name="DENSE_LAYER_2")(combined)
-        output = Dense(num_predictions, name="OUTPUT_LAYER", activation='sigmoid')(combined_dense_two)
+        combined_dense_two = Dense(32, activation='relu',name="DENSE_LAYER_2")(combined)
+        output = Dense(num_predictions, activation='sigmoid', name="OUTPUT_LAYER")(combined_dense_two)
 
       
         # Compile ModeL
@@ -504,18 +511,31 @@ class Ensemble_Static():
         #sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
         self.train_timeseries_x, self.train_static_x, self.train_y = numpy_window.train     
         self.test_timeseries_x, self.test_static_x, self.test_y = numpy_window.test 
+
+        self.train_y = tf.squeeze(self.train_y)
+        self.test_y = tf.squeeze(self.test_y)
+        
         
         self.model.summary()
+
+        self.train()
         
     def train(self):
-        self.model.compile(loss='MeanSquaredError', optimizer='adam', metrics=['MeanAbsoluteError'])
-        
+
+        opt = keras.optimizers.Adam(learning_rate=1e-4, beta_1=0.87, beta_2=0.990, amsgrad=False)
+
+        if self.loss_func is not None:
+            self.model.compile(loss=self.loss_func, optimizer='adam', metrics=['MeanAbsoluteError'])
+        else:
+            self.model.compile(loss='MeanSquaredError', optimizer='adam', metrics=['MeanAbsoluteError'])
+
+        # print(self.train_timeseries_x.mean(0).mean(0), self.train_static_x.mean(0), self.train_y.mean(0))
         
         self.model.fit([self.train_timeseries_x, self.train_static_x], 
                        self.train_y, 
                        epochs=self.epochs, 
                        batch_size=self.batch_size, 
-                       verbose=1)
+                       verbose=0)
 
 
     @property
@@ -529,10 +549,10 @@ class Ensemble_Static():
         start = int(filter_index*n_observations)
         end = int((filter_index+1)*n_observations)
         
-        print("Timeseries input shape:", self.test_timeseries_x[start:end].shape)
-        print("Static input shape:", self.test_static_x[start:end].shape)
+        # print("Timeseries input shape:", self.test_timeseries_x[start:end].shape)
+        # print("Static input shape:", self.test_static_x[start:end].shape)
         
-        return self.model.predict([self.test_timeseries_x[start:end,:], self.test_static_x[start:end,:]])
+        return self.model.predict([self.test_timeseries_x[start:end,:], self.test_static_x[start:end,:]], verbose=0)
     
     
     def actuals(self, station):
@@ -541,10 +561,9 @@ class Ensemble_Static():
 
         start = int(filter_index*n_observations)
         end = int((filter_index+1)*n_observations)
-        print('TSET Y SHAPE',self.test_y.shape)
-        
+        # print('TEST Y SHAPE',self.test_y.shape)
 
-        return self.test_y.reshape(self.test_y.shape[0], self.test_y.shape[2])[start:end, :]
+        return self.test_y[start:end, :].numpy()
 
     
     def average_model_error(self, station, cut=100):
@@ -564,7 +583,6 @@ class Ensemble_Static():
         
         if avg_error==0:
             return 0
-        print(avg_error)
         avg_error = avg_error/actuals.shape[0]*actuals.shape[1]
 
         return avg_error 
@@ -583,7 +601,7 @@ class Ensemble_Static():
             print("Input: {}".format(self.test_y[loc:loc+self.numpy_window.input_width+1].flatten()))
             print("Predicted: {}".format(pred))
             print("Actual: {}".format(actual))
-            print("-------------------------")        
+            print("-------------------------")
 
     def summary(self, station):
         summary_dict = {}
@@ -591,20 +609,20 @@ class Ensemble_Static():
         summary_dict['station'] = station
         summary_dict['input_width'] = self.numpy_window.input_width
         summary_dict['label_width'] = self.numpy_window.label_width
-        summary_dict['num_timeseries_features'] = self.numpy_window.num_timeseries_features 
-        summary_dict['num_static_features'] = self.numpy_window.num_static_features        
+        summary_dict['num_timeseries_features'] = self.numpy_window.num_timeseries_features
+        summary_dict['num_static_features'] = self.numpy_window.num_static_features
         summary_dict['timeseries_inputs'] = self.numpy_window.timeseries_source
-        summary_dict['static_inputs'] = self.numpy_window.summary_source     
+        summary_dict['static_inputs'] = self.numpy_window.summary_source
 
    
-        summary_dict['SERA_1%'] = self.average_model_error(station, cut=1)
-        summary_dict['SERA_2%'] = self.average_model_error(station, cut=2)    
-        summary_dict['SERA_5%'] = self.average_model_error(station, cut=5)        
-        summary_dict['SERA_10%'] = self.average_model_error(station, cut=10)  
-        summary_dict['SERA_25%'] = self.average_model_error(station, cut=25)  
-        summary_dict['SERA_50%'] = self.average_model_error(station, cut=50)  
-        summary_dict['SERA_75%'] = self.average_model_error(station, cut=75)  
-        summary_dict['SERA_all'] = self.average_model_error(station, cut=100)
+        summary_dict['SER_1%'] = self.average_model_error(station, cut=1)
+        summary_dict['SER_2%'] = self.average_model_error(station, cut=2)
+        summary_dict['SER_5%'] = self.average_model_error(station, cut=5)
+        summary_dict['SER_10%'] = self.average_model_error(station, cut=10)
+        summary_dict['SER_25%'] = self.average_model_error(station, cut=25)  
+        summary_dict['SER_50%'] = self.average_model_error(station, cut=50)  
+        summary_dict['SER_75%'] = self.average_model_error(station, cut=75)  
+        summary_dict['RMSE'] = self.average_model_error(station, cut=100)
         
         return summary_dict
 
@@ -619,7 +637,7 @@ class Switch_Model(Model):
         self.window_switch = window_switch
         self.window = window_regular
         
-        assert(window_switch.input_width == self.window.input_width)
+        assert(self.window_switch.input_width == self.window.input_width)
         
         self.switch = Ensemble_Static(window_switch)
         
@@ -628,26 +646,31 @@ class Switch_Model(Model):
         self.q95 = Base_Model(model_name='multi-LSTM', window=window_regular, CONV_WIDTH=CONV_WIDTH, loss_func=CustomLoss.qloss_95)
         
     def predictions(self, station):
-        preds_switch = self.switch.predictions(station)     
+        preds_switch = self.switch.predictions(station)
         
         preds_regular = self.regular.predictions(station)
-        preds_q70 = self.q70.predictions(station)        
+        preds_q70 = self.q70.predictions(station)
         preds_q95 = self.q95.predictions(station)
+
+        test_array = self.window.test_windows(station)
+
+        new_pred = []
         
-        test_array = self.window.test_windows(station)   
+        # for pred_switch, pred_regular, pred_q70, pred_q95 in zip(preds_switch, preds_regular, preds_q70, preds_q95):
 
-        new_pred=[]
+        #     switch_condition = pred_switch >= 0.95
+        #     q95_condition = (pred_switch >= 0.7) & (pred_switch < 0.95)
+        #     q70_condition = pred_switch < 0.7  # You might want to specify this condition differently
+
+        #     new_pred.append(np.where(switch_condition, pred_q95, np.where(q95_condition, pred_q70, pred_regular)))
+
+        switch_condition = preds_switch >= 0.95
+        q95_condition = (preds_switch >= 0.7) & (preds_switch < 0.95)
+        q70_condition = preds_switch < 0.7  # You might want to specify this condition differently
+
+        new_pred = np.where(switch_condition, preds_q95, np.where(q95_condition, preds_q70, preds_regular))
         
-        for pred_switch, pred_regular, pred_q70, pred_q95 in zip(preds_switch, preds_regular, preds_q70, preds_q95):
-
-                
-            switch_condition = pred_switch > 0.95
-            q95_condition = pred_switch > 0.7
-            q70_condition = pred_switch <= 0.7  # You might want to specify this condition differently
-
-            new_pred.append(np.where(switch_condition, pred_q95, np.where(q95_condition, pred_q70, pred_regular)))
-                
-        return np.array(new_pred)
+        return new_pred
         
 
     def test_MSE(self, station=None):
@@ -662,23 +685,127 @@ class Switch_Model(Model):
         
         return roc_auc_score(test_array, preds)
 
+
+    def average_model_error_between_quantiles(self, station=None, q_start=None, q_end=None):
+            
+            
+        if station is not None:
+            preds_all = self.predictions(station)
+            actuals_all = self.window.test_windows(station)
+        else:
+            preds_all = self.predictions()
+            actuals_all = self.window.test_windows()
+
+        print(f"station: {station} -- q_start: {q_start}, q_end: {q_end}")
+
+        avg_error_all = []
+
+        for t in range(actuals_all.shape[-1]):
+
+            preds = preds_all[...,t]
+            actuals = actuals_all[...,t]
+
+            if q_start is not None and q_end is not None:
+                start_percentile = np.percentile(actuals.flatten(), q_start)
+                end_percentile = np.percentile(actuals.flatten(), q_end)
+                locs = np.where((actuals>=start_percentile) & (actuals<end_percentile))[0]
+            
+            elif q_start is not None and q_end is None:
+                start_percentile = np.percentile(actuals.flatten(), q_start)
+                end_percentile = None
+                locs = np.where(actuals>=start_percentile)[0]
+    
+            elif q_start is None and q_end is not None:
+                start_percentile = None
+                end_percentile = np.percentile(actuals.flatten(), q_end)
+                locs = np.where(actuals<end_percentile)[0]
+    
+            else:
+                raise(Exception('Both q_start and q_end cannot be None'))
+    
+    
+            print(f"Station: {station} -- Quantiles: {start_percentile} -- {end_percentile}")
+    
+            if len(locs) != 0:
+                preds = preds[locs]
+                actuals = actuals[locs]
+                
+                avg_error = 0
+        
+                for window_pred, window_actual in zip(preds, actuals):
+                    avg_error += np.sum((window_pred - window_actual)**2)
+        
+                avg_error = avg_error/actuals.shape[0]
+            
+            else:
+                avg_error = np.nan
+
+            avg_error_all.append(avg_error)
+
+
+        return avg_error_all
+
+    
+
     def summary(self, station=None):
         summary_dict = {}
         
         summary_dict['input_width'] = self.window.input_width
         summary_dict['label_width'] = self.window.label_width
-        
-        # summary_dict['station'] = station
 
-        summary_dict['NSE'] = self.get_NSE(station)       
+        if station is not None:
+            summary_dict['station'] = station
+
+        summary_dict['NSE'] = self.get_NSE(station)
                   
-        summary_dict['SER_1%'] = self.average_model_error(station, cut=1)
-        summary_dict['SER_2%'] = self.average_model_error(station, cut=2)    
-        summary_dict['SER_5%'] = self.average_model_error(station, cut=5)        
-        summary_dict['SER_10%'] = self.average_model_error(station, cut=10)  
-        summary_dict['SER_25%'] = self.average_model_error(station, cut=25)  
-        summary_dict['SER_50%'] = self.average_model_error(station, cut=50)  
-        summary_dict['SER_75%'] = self.average_model_error(station, cut=75)  
-        summary_dict['RMSE'] = self.average_model_error(station, cut=100)
+        # summary_dict['SER_1%'] = self.average_model_error(station, cut=1)
+        # summary_dict['SER_2%'] = self.average_model_error(station, cut=2)
+        # summary_dict['SER_5%'] = self.average_model_error(station, cut=5)
+        # summary_dict['SER_10%'] = self.average_model_error(station, cut=10)
+        # summary_dict['SER_25%'] = self.average_model_error(station, cut=25)
+        # summary_dict['SER_50%'] = self.average_model_error(station, cut=50)
+        # summary_dict['SER_75%'] = self.average_model_error(station, cut=75)
+        # summary_dict['RMSE'] = self.average_model_error(station, cut=100)
+
+        summary_dict['RMSE_high'] = self.average_model_error_between_quantiles(station, q_start=70, q_end=95)
+        summary_dict['RMSE_extreme'] = self.average_model_error_between_quantiles(station, q_start=95)
+        summary_dict['RMSE_normal'] = self.average_model_error_between_quantiles(station, q_end=70)
+        summary_dict['RMSE_all'] = self.average_model_error_between_quantiles(station, q_end=100)
+
+        return summary_dict
+
+
+
+
+
+
+
+
+class QuantileEnsemble(Model):
+    
+    threshold = 0.7
+    
+    def __init__(self, window, CONV_WIDTH):
+        self.window = window
+        self.regular = Base_Model(model_name='multi-LSTM', window=window, CONV_WIDTH=CONV_WIDTH)
+        self.q05 = Base_Model(model_name='multi-LSTM', window=window, CONV_WIDTH=CONV_WIDTH, loss_func=CustomLoss.qloss_05)
+        self.q95 = Base_Model(model_name='multi-LSTM', window=window, CONV_WIDTH=CONV_WIDTH, loss_func=CustomLoss.qloss_95)
         
-        return summary_dict  
+    def predictions(self, station):
+        preds_regular = self.regular.predictions(station)
+        preds_q05 = self.q05.predictions(station)
+        preds_q95 = self.q95.predictions(station)
+        return np.stack([preds_regular, preds_q05, preds_q95], axis=-1)
+
+    def test_MSE(self, station=None):
+        preds = self.predictions(data='test', station=station)
+        test_array = self.window.test_array(station)[self.window.input_width:]
+        return mean_squared_error(test_array, preds)
+
+    def summary(self, station=None):
+
+        summary_regular = self.regular.summary(station)
+        summary_q05 = self.q05.summary(station)
+        summary_q95 = self.q95.summary(station)
+        
+        return [summary_regular, summary_q05, summary_q95]
